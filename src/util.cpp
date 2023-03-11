@@ -133,7 +133,7 @@ SEXP get_env(SEXP e)
 
     if (R_GlobalEnv == e)
     {
-        return Rf_cons(Rf_mkString("R_GlobalEnv"), get_env(ENCLOS(e)));
+        return Rf_cons(Rf_mkString(".GlobalEnv"), get_env(ENCLOS(e)));
     }
 
     return Rf_cons(Rf_getAttrib(e, R_NameSymbol), get_env(ENCLOS(e)));
