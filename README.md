@@ -6,6 +6,15 @@
 + get_fun
 + get_promise
 
+### get_expr  
+
+``` r
+
+get_expr(lapply)
+
+  
+```
+
 ## 对源码的阅读，做了一些学习记录，更多在png目录中
 
 ![][avatar]
