@@ -50,6 +50,36 @@ function (X, FUN, ...)
 <environment: namespace:base>
 
 <br/><br/>
+
+``` r
+a <- new.env(hash = F)
+a$a <- 10
+get_env(a)
+```
+$frame
+$frame$a
+[1] 10
+
+
+$parent_env
+ [1] ".GlobalEnv"        "package:frank"     "tools:rstudio"    
+ [4] "package:stats"     "package:graphics"  "package:grDevices"
+ [7] "package:utils"     "package:datasets"  "package:methods"  
+[10] "Autoloads"         "package:base"      "empty"            
+
+$frame_value
+$frame_value[[1]]
+$frame_value[[1]]$type
+[1] 14
+
+$frame_value[[1]]$value
+[1] 10
+
+$frame_value[[1]]$tag
+a
+
+
+<br/><br/>
 ### 对源码的阅读，做了一些学习记录，更多在[png目录][png]中
 
 
