@@ -44,6 +44,9 @@ function (X, FUN, ...)
 <bytecode: 0x7f9c440f35a0>
 <environment: namespace:base>
 
+
+
+
 ### 对源码的阅读，做了一些学习记录，更多在png目录中
 
 ![][avatar]
