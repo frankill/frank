@@ -13,7 +13,7 @@ LinkingTo: cpp11
 SystemRequirements: C++17
 LazyData: TRUE
 Imports: 
-    purrr
+    cpp11
 Depends: 
     R (>= 2.10)
 Suggests: 
