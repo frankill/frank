@@ -10,4 +10,4 @@
 
 ![][avatar]
 
-[avatar]: https:://github.com/frankill/frank/png/r globalenv.png
+[avatar]: 'https:://github.com/frankill/frank/png/r globalenv.png'
