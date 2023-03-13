@@ -1,16 +1,17 @@
 # frank
-<br/><br/>
+ 
 ### 用来学习R内部数据结构的辅助包，包含了表达式提取，函数参数提取，环境内容提取，promise 表达式提取
-<br/>
+ 
 + get_expr
 + get_env
 + get_fun
 + get_promise
-<br/><br/>
+
 ##### get_expr  
 
 ``` r
-get_expr(lapply)
+res <- get_expr(lapply)
+print(res)
 ```
 
 $type
@@ -45,7 +46,7 @@ function (X, FUN, ...)
 <bytecode: 0x7f9c440f35a0>
 <environment: namespace:base>
 
-<br/><br/><br/>
+<br/><br/>
 ### 对源码的阅读，做了一些学习记录，更多在png目录中
 
 ![][avatar]
