@@ -56,26 +56,26 @@ a <- new.env(hash = F)
 a$a <- 10
 get_env(a)
 ```
-$frame
-$frame$a
-[1] 10
+$frame  
+$frame$a  
+[1] 10  
 
 
-$parent_env
- [1] ".GlobalEnv"        "package:frank"     "tools:rstudio"    
- [4] "package:stats"     "package:graphics"  "package:grDevices"
- [7] "package:utils"     "package:datasets"  "package:methods"  
-[10] "Autoloads"         "package:base"      "empty"            
+$parent_env  
+ [1] ".GlobalEnv"        "package:frank"     "tools:rstudio"      
+ [4] "package:stats"     "package:graphics"  "package:grDevices"  
+ [7] "package:utils"     "package:datasets"  "package:methods"    
+[10] "Autoloads"         "package:base"      "empty"              
 
-$frame_value
-$frame_value[[1]]
-$frame_value[[1]]$type
-[1] 14
+$frame_value  
+$frame_value[[1]]  
+$frame_value[[1]]$type  
+[1] 14  
 
-$frame_value[[1]]$value
-[1] 10
+$frame_value[[1]]$value  
+[1] 10  
 
-$frame_value[[1]]$tag
+$frame_value[[1]]$tag  
 a
 
 
