@@ -51,6 +51,9 @@ SEXP getlang(SEXP s)
 
 [[cpp11::register]] SEXP getpromis(SEXP p)
 {
+    if (TYPEOF(p) != PROMSXP){
+        return list();
+    }
 
     return list({"code"_nm = PRCODE(p),
                  "env"_nm = PRENV(p),
