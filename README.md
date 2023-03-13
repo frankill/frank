@@ -17,39 +17,37 @@ res <- get_expr(lapply)
 print(res)
 ```
 
-$type
-[1] 1
+$type  
+[1] 1  
 
-$name
-<CHARSXP: "lapply">
+$name  
+<CHARSXP: "lapply">  
 
-$value
-<promise: 0x7f9c44092820>
+$value  
+<promise: 0x7f9c44092820>  
 
-$value_type
-[1] 5
+$value_type  
+[1] 5  
 
-$internal
-.Primitive("lapply")
+$internal  
+.Primitive("lapply")  
 
-$value_code
-lazyLoadDBfetch(c(533118L, 481L), datafile, compressed, envhook)
+$value_code  
+lazyLoadDBfetch(c(533118L, 481L), datafile, compressed, envhook)  
 
-$value_env
-NULL
+$value_env  
+NULL  
 
-$value_value
-function (X, FUN, ...) 
-{
-    FUN <- match.fun(FUN)
-    if (!is.vector(X) || is.object(X)) 
-        X <- as.list(X)
-    .Internal(lapply(X, FUN))
-}
-<bytecode: 0x7f9c440f35a0>
-<environment: namespace:base>
-
-<br/><br/>
+$value_value  
+function (X, FUN, ...)  
+{  
+    FUN <- match.fun(FUN)  
+    if (!is.vector(X) || is.object(X))  
+        X <- as.list(X)  
+    .Internal(lapply(X, FUN))  
+}  
+<bytecode: 0x7f9c440f35a0>  
+<environment: namespace:base>  
 
 ``` r
 a <- new.env(hash = F)
