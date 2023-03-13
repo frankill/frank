@@ -8,4 +8,4 @@
 
 ## 对源码的阅读，做了一些学习记录，更多在png目录中
 
-[url]: [https:://github.com/frankill/frank/png/r globalenv.png] 
+[avatar]: [https:://github.com/frankill/frank/png/r globalenv.png] 
