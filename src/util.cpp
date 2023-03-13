@@ -1,13 +1,4 @@
 #include <cpp11.hpp>
-// #include <algorithm>
-// #include <numeric>
-// #include <execution>
-// #include <iostream>
-// #include <string>
-// #include <ctime>
-// #include <future>
-
-// using namespace std;
 
 using namespace cpp11;
 
@@ -51,7 +42,8 @@ SEXP getlang(SEXP s)
 
 [[cpp11::register]] SEXP getpromis(SEXP p)
 {
-    if (TYPEOF(p) != PROMSXP){
+    if (TYPEOF(p) != PROMSXP)
+    {
         return list();
     }
 
@@ -121,36 +113,36 @@ SEXP get_env(SEXP e)
 {
     if (R_EmptyEnv == e)
     {
-        return Rf_list1(Rf_mkString("empty"));
+        return safe[Rf_list1](Rf_mkString("empty"));
     }
 
     if (R_BaseEnv == e)
     {
-        return Rf_cons(Rf_mkString("package:base"), get_env(ENCLOS(e)));
+        return safe[Rf_cons](Rf_mkString("package:base"), get_env(ENCLOS(e)));
     }
 
     if (R_BaseNamespace == e)
     {
-        return Rf_cons(Rf_mkString("package:basenamespace"), get_env(ENCLOS(e)));
+        return safe[Rf_cons](Rf_mkString("package:basenamespace"), get_env(ENCLOS(e)));
     }
 
     if (R_GlobalEnv == e)
     {
-        return Rf_cons(Rf_mkString(".GlobalEnv"), get_env(ENCLOS(e)));
+        return safe[Rf_cons](Rf_mkString(".GlobalEnv"), get_env(ENCLOS(e)));
     }
 
-    return Rf_cons(Rf_getAttrib(e, R_NameSymbol), get_env(ENCLOS(e)));
+    return safe[Rf_cons](Rf_getAttrib(e, R_NameSymbol), get_env(ENCLOS(e)));
 }
 
 SEXP tovector(SEXP e)
 {
 
-    SEXP res = PROTECT(Rf_allocVector(STRSXP, Rlen(e)));
+    SEXP res = safe[Rf_allocVector](STRSXP, Rlen(e));
     int n = 0;
 
     for (SEXP i = e; i != R_NilValue; i = CDR(i), n++)
     {
-        SET_STRING_ELT(res, n, Rf_asChar(CAR(i)));
+        SET_STRING_ELT(res, n, safe[Rf_asChar](CAR(i)));
     }
 
     return res;
@@ -164,7 +156,7 @@ SEXP tovector(SEXP e)
         return R_NilValue;
     }
 
-    return list({"hash"_nm = HASHTAB(env),
+    return list({// "hash"_nm = HASHTAB(env),
                  "frame"_nm = FRAME(env),
                  "parent_env"_nm = tovector(get_env(ENCLOS(env))),
                  "frame_value"_nm = getlang(FRAME(env))});
