@@ -1,13 +1,5 @@
 #include <cpp11.hpp>
-// #include <algorithm>
-// #include <numeric>
-// #include <execution>
-// #include <iostream>
-// #include <string>
-// #include <ctime>
-// #include <future>
 
-// using namespace std;
 
 using namespace cpp11;
 
