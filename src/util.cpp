@@ -1,4 +1,13 @@
 #include <cpp11.hpp>
+// #include <algorithm>
+// #include <numeric>
+// #include <execution>
+// #include <iostream>
+// #include <string>
+// #include <ctime>
+// #include <future>
+
+// using namespace std;
 
 using namespace cpp11;
 
@@ -156,7 +165,7 @@ SEXP tovector(SEXP e)
         return R_NilValue;
     }
 
-    return list({// "hash"_nm = HASHTAB(env),
+    return list({"hash"_nm = env == R_GlobalEnv ? R_NilValue: HASHTAB(env),
                  "frame"_nm = FRAME(env),
                  "parent_env"_nm = tovector(get_env(ENCLOS(env))),
                  "frame_value"_nm = getlang(FRAME(env))});
