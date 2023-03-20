@@ -12,6 +12,10 @@ getfun <- function(fun) {
   .Call(`_frank_getfun`, fun)
 }
 
+r_eval <- function(sym, env) {
+  .Call(`_frank_r_eval`, sym, env)
+}
+
 getenv <- function(env) {
   .Call(`_frank_getenv`, env)
 }
