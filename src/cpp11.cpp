@@ -27,6 +27,13 @@ extern "C" SEXP _frank_getfun(SEXP fun) {
   END_CPP11
 }
 // util.cpp
+SEXP r_eval(SEXP sym, SEXP env);
+extern "C" SEXP _frank_r_eval(SEXP sym, SEXP env) {
+  BEGIN_CPP11
+    return cpp11::as_sexp(r_eval(cpp11::as_cpp<cpp11::decay_t<SEXP>>(sym), cpp11::as_cpp<cpp11::decay_t<SEXP>>(env)));
+  END_CPP11
+}
+// util.cpp
 SEXP getenv(SEXP env);
 extern "C" SEXP _frank_getenv(SEXP env) {
   BEGIN_CPP11
@@ -40,6 +47,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_frank_getexpr",   (DL_FUNC) &_frank_getexpr,   1},
     {"_frank_getfun",    (DL_FUNC) &_frank_getfun,    1},
     {"_frank_getpromis", (DL_FUNC) &_frank_getpromis, 1},
+    {"_frank_r_eval",    (DL_FUNC) &_frank_r_eval,    2},
     {NULL, NULL, 0}
 };
 }
