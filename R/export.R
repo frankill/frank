@@ -1,5 +1,4 @@
 #' @description expression symbol promise lang bytecode
-#' 
 #' @export 
 get_function <- function(f) {
     getfun(f)
@@ -18,4 +17,14 @@ get_env <- function(e) {
 #' @export 
 get_promise <- function(p) {
     getpromis(p)
+}
+
+#' @export  
+enexpr <- function(e) {
+    r_eval(substitute(e), parent.frame())
+}
+
+#' @export  
+expr <- function(e) {
+    enexpr(e)
 }
