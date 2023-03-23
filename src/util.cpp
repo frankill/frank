@@ -1,13 +1,4 @@
 #include <cpp11.hpp>
-// #include <algorithm>
-// #include <numeric>
-// #include <execution>
-// #include <iostream>
-// #include <string>
-// #include <ctime>
-// #include <future>
-
-// using namespace std;
 
 using namespace cpp11;
 
@@ -41,7 +32,7 @@ SEXP getlang(SEXP s)
             a = CAR(d);
         }
         SEXP t = TAG(d);
-        res[i] = list({"type"_nm = integers({TYPEOF(a)}),
+        res[i] = list({"type"_nm = integers({type}),
                        "value"_nm = a,
                        "tag"_nm = t});
     }
@@ -56,7 +47,7 @@ SEXP getlang(SEXP s)
         return list();
     }
 
-    return list({"code"_nm = PRCODE(p),
+    return list({"code"_nm = getlang(PRCODE(p)),
                  "env"_nm = PRENV(p),
                  "type"_nm = TYPEOF(PRCODE(p)),
                  "value"_nm = PRVALUE(p) == R_UnboundValue ? R_NilValue : PRVALUE(p)});
@@ -114,7 +105,9 @@ SEXP getlang(SEXP s)
     }
 
     return list({"formals"_nm = getlang(FORMALS(fun)),
-                 "body"_nm = R_BytecodeExpr(BODY(fun)),
+                 "body"_nm = cpp11::writable::list({CAR(BODY(fun)),
+                                                    CDR(BODY(fun))}),
+                 "bytecode"_nm = BODY(fun),
                  "closenv"_nm = CLOENV(fun)});
 }
 
@@ -145,7 +138,6 @@ SEXP get_env(SEXP e)
 
 SEXP tovector(SEXP e)
 {
-
     SEXP res = safe[Rf_allocVector](STRSXP, Rlen(e));
     int n = 0;
 
@@ -157,27 +149,38 @@ SEXP tovector(SEXP e)
     return res;
 }
 
-[[cpp11::register]] SEXP r_eval(SEXP sym, SEXP env)
+[[cpp11::register]] SEXP r_eval(SEXP expr, SEXP env)
 {
-
-    if (SYMSXP == TYPEOF(sym))
+    if (SYMSXP == TYPEOF(expr))
     {
 
-        SEXP s = Rf_findVar(sym, env);
+        SEXP s = Rf_findVar(expr, env);
         if (TYPEOF(s) == PROMSXP)
         {
             return PRCODE(s);
+            // return getpromis(s) ;
         }
 
-        return safe[Rf_eval](sym, env);
+        return s;
     }
 
-    return R_NilValue;
+    if (EXPRSXP == TYPEOF(expr))
+    {
+        int n = LENGTH(expr);
+        cpp11::writable::list res(n);
+        for (int i = 0; i < n; i++)
+        {
+            SET_VECTOR_ELT(res, i, r_eval(VECTOR_ELT(expr, i), env));
+        }
+        return res;
+    }
+
+    return safe[Rf_eval](expr, env);
 }
 
+//' @export
 [[cpp11::register]] SEXP getenv(SEXP env)
 {
-
     if (!Rf_isEnvironment(env))
     {
         return R_NilValue;
@@ -185,6 +188,7 @@ SEXP tovector(SEXP e)
 
     return list({"hash"_nm = env == R_GlobalEnv ? R_NilValue : HASHTAB(env),
                  "frame"_nm = FRAME(env),
+                 "frame_type"_nm = TYPEOF(FRAME(env)),
                  "parent_env"_nm = tovector(get_env(ENCLOS(env))),
                  "frame_value"_nm = getlang(FRAME(env))});
 }
