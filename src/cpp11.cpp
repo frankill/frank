@@ -27,10 +27,10 @@ extern "C" SEXP _frank_getfun(SEXP fun) {
   END_CPP11
 }
 // util.cpp
-SEXP r_eval(SEXP sym, SEXP env);
-extern "C" SEXP _frank_r_eval(SEXP sym, SEXP env) {
+SEXP r_eval(SEXP expr, SEXP env);
+extern "C" SEXP _frank_r_eval(SEXP expr, SEXP env) {
   BEGIN_CPP11
-    return cpp11::as_sexp(r_eval(cpp11::as_cpp<cpp11::decay_t<SEXP>>(sym), cpp11::as_cpp<cpp11::decay_t<SEXP>>(env)));
+    return cpp11::as_sexp(r_eval(cpp11::as_cpp<cpp11::decay_t<SEXP>>(expr), cpp11::as_cpp<cpp11::decay_t<SEXP>>(env)));
   END_CPP11
 }
 // util.cpp
