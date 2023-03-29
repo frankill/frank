@@ -1,5 +1,5 @@
 [png]: https://github.com/frankill/frank/tree/main/png
-[avatar]: https://github.com/frankill/frank/blob/main/png/package.png
+[avatar]: https://github.com/frankill/frank/blob/main/png/funciton_call.png
 
 # frank
  
