@@ -1,6 +1,6 @@
 [png]: https://github.com/frankill/frank/tree/main/png
-[avatar]: https://github.com/frankill/frank/blob/main/png/funciton_call.png
-
+[funciton_call]: https://github.com/frankill/frank/blob/main/png/funciton_call.png
+[token]: https://github.com/frankill/frank/blob/main/png/token.png
 # frank
  
 ### 用来学习R内部数据结构的辅助包，包含了表达式提取，函数参数提取，环境内容提取，promise 表达式提取
@@ -77,10 +77,9 @@ $frame_value[[1]]$tag
 a
 
 
-<br/><br/>
 ### 对源码的阅读，做了一些学习记录，更多在[png目录][png]中
 
 
 
-![][avatar]
-
+![][funciton_call]
+![][token]
