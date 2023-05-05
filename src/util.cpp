@@ -2,6 +2,16 @@
 
 using namespace cpp11;
 
+/**
+ * Returns the length of the given SEXP object.
+ *
+ * @param s The SEXP object whose length is to be determined.
+ *
+ * @return An integer representing the length of the given SEXP object.
+ *
+ * @throws None.
+ */
+
 int Rlen(SEXP s)
 {
     int i = 0;
@@ -13,6 +23,16 @@ int Rlen(SEXP s)
 
     return i;
 }
+/**
+ * Returns a writable list of language expressions from the input SEXP. Recursively
+ * extracts language expressions from nested lists.
+ *
+ * @param s The input SEXP to extract language expressions from.
+ *
+ * @return A writable list of language expressions.
+ *
+ * @throws ErrorType If the input SEXP is not a language expression or list.
+ */
 
 SEXP getlang(SEXP s)
 {
@@ -39,6 +59,15 @@ SEXP getlang(SEXP s)
 
     return res;
 }
+/**
+ * Returns a list containing information about the given promise object.
+ *
+ * @param p The promise object to retrieve information from.
+ *
+ * @return A list containing the code, environment, type, and value of the promise.
+ *
+ * @throws None
+ */
 
 [[cpp11::register]] SEXP getpromis(SEXP p)
 {
@@ -52,6 +81,15 @@ SEXP getlang(SEXP s)
                  "type"_nm = TYPEOF(PRCODE(p)),
                  "value"_nm = PRVALUE(p) == R_UnboundValue ? R_NilValue : PRVALUE(p)});
 }
+/**
+ * Returns an R expression as a list with various properties.
+ *
+ * @param e an R expression
+ *
+ * @return a list with properties of the expression
+ *
+ * @throws Error if e is not a valid expression
+ */
 
 [[cpp11::register]] SEXP getexpr(SEXP e)
 {
@@ -91,6 +129,16 @@ SEXP getlang(SEXP s)
 
     return getlang(e);
 }
+/**
+ * Retrieves the formals, bytecode, body, bcexpr, bcexpr_type, and closenv
+ * of a given R function.
+ *
+ * @param fun The R function to extract information from.
+ *
+ * @return A list containing the extracted information.
+ *
+ * @throws An error if the given SEXP is not a function.
+ */
 
 [[cpp11::register]] SEXP getfun(SEXP fun)
 {
@@ -105,11 +153,22 @@ SEXP getlang(SEXP s)
     }
 
     return list({"formals"_nm = getlang(FORMALS(fun)),
-                 "body"_nm = cpp11::writable::list({CAR(BODY(fun)),
-                                                    CDR(BODY(fun))}),
-                 "bytecode"_nm = BODY(fun),
+                 "bytecode"_nm = cpp11::writable::list({CAR(BODY(fun)),
+                                                        CDR(BODY(fun))}),
+                 "body"_nm = BODY(fun),
+                 "bcexpr"_nm = R_BytecodeExpr(BODY(fun)),
+                 "bcexpr_type"_nm = TYPEOF(R_BytecodeExpr(BODY(fun))),
                  "closenv"_nm = CLOENV(fun)});
 }
+/**
+ * Returns the environment of the given SEXP object.
+ *
+ * @param e the SEXP object representing the environment
+ *
+ * @return a SEXP object representing the environment
+ *
+ * @throws ErrorType if a error occurs while looking up the environment
+ */
 
 SEXP get_env(SEXP e)
 {
@@ -135,6 +194,15 @@ SEXP get_env(SEXP e)
 
     return safe[Rf_cons](Rf_getAttrib(e, R_NameSymbol), get_env(ENCLOS(e)));
 }
+/**
+ * Convert an R language list to a character vector.
+ *
+ * @param e the R language list to be converted.
+ *
+ * @return a character vector representation of the input list.
+ *
+ * @throws ErrorType if any error occurs during the conversion.
+ */
 
 SEXP tovector(SEXP e)
 {
@@ -148,6 +216,16 @@ SEXP tovector(SEXP e)
 
     return res;
 }
+/**
+ * Evaluate a given R expression in a specified environment.
+ *
+ * @param expr The expression to evaluate.
+ * @param env The environment in which to evaluate the expression.
+ *
+ * @return The result of evaluating the expression in the given environment.
+ *
+ * @throws ErrorType If there is an error during evaluation.
+ */
 
 [[cpp11::register]] SEXP r_eval(SEXP expr, SEXP env)
 {
@@ -167,6 +245,16 @@ SEXP tovector(SEXP e)
     if (EXPRSXP == TYPEOF(expr))
     {
         int n = LENGTH(expr);
+        /**
+         * Creates a writable list with a given size.
+         *
+         * @param n the size of the list to create
+         *
+         * @return the newly created writable list
+         *
+         * @throws ErrorType description of error
+         */
+
         cpp11::writable::list res(n);
         for (int i = 0; i < n; i++)
         {
@@ -191,4 +279,30 @@ SEXP tovector(SEXP e)
                  "frame_type"_nm = TYPEOF(FRAME(env)),
                  "parent_env"_nm = tovector(get_env(ENCLOS(env))),
                  "frame_value"_nm = getlang(FRAME(env))});
+}
+/**
+ * Returns the value of a property with the given name from the input R object.
+ *
+ * @param object The input R object to search for the property.
+ * 
+ * @param property_name The name of the property to retrieve from the input object.
+ *
+ * @return The value of the property with the given name from the input R object.
+ * If no property with that name is found, returns R_NilValue.
+ *
+ * @throws None
+ */
+
+SEXP get_property(SEXP object, const char *property_name)
+{
+    SEXP attrib = ATTRIB(object);
+    while (attrib != R_NilValue)
+    {
+        if (strcmp(CHAR(PRINTNAME(TAG(attrib))), property_name) == 0)
+        {
+            return CAR(attrib);
+        }
+        attrib = CDR(attrib);
+    }
+    return R_NilValue;
 }
